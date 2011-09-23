@@ -174,19 +174,4 @@ class RegEx
       $
     }xi';
   }
-
-  /**
-   * MM/DD/YYYY or MM-DD-YYYY
-   * [0] => entire date
-   * [1] => month
-   * [2] => date
-   * [3] => year
-   *
-   * @return string
-   */
-  final public static function date()
-  {
-    return '{^(\d{2})[/-](\d{2})[/-](\d{4})$}';
-  }
-
 }
