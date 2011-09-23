@@ -176,6 +176,7 @@ class RegEx
   }
 
   /**
+   * MM/DD/YYYY or MM-DD-YYYY
    * [0] => entire date
    * [1] => month
    * [2] => date
