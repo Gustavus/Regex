@@ -419,4 +419,52 @@ class RegExTest extends PHPUnit_Framework_TestCase
     $this->checkRegex('majorsOrMinorsEmailList', 'f-art-101-001@gustavus.edu', 0);
   }
 
+  /**
+   * @test
+   */
+  public function courseEmailListFallCourseAlias()
+  {
+    $this->checkRegex('courseEmailList', 'f-art-101-001@lists.gustavus.edu', 1, array('f-art-101-001@lists.gustavus.edu', 'f-art-101-001'));
+  }
+
+  /**
+   * @test
+   */
+  public function courseEmailListJanuaryCourseAlias()
+  {
+    $this->checkRegex('courseEmailList', 'jt-art-101-001@lists.gustavus.edu', 1, array('jt-art-101-001@lists.gustavus.edu', 'jt-art-101-001'));
+  }
+
+  /**
+   * @test
+   */
+  public function courseEmailListSpringCourseAlias()
+  {
+    $this->checkRegex('courseEmailList', 's-art-101-001@lists.gustavus.edu', 1, array('s-art-101-001@lists.gustavus.edu', 's-art-101-001'));
+  }
+
+  /**
+   * @test
+   */
+  public function courseEmailListSpringCourseAliasAllSections()
+  {
+    $this->checkRegex('courseEmailList', 's-art-101-all@lists.gustavus.edu', 1, array('s-art-101-all@lists.gustavus.edu', 's-art-101-all'));
+  }
+
+  /**
+   * @test
+   */
+  public function courseEmailListNonGeneratedEmailAddress()
+  {
+    $this->checkRegex('courseEmailList', 'jlencion@gustavus.edu', 0);
+  }
+
+  /**
+   * @test
+   */
+  public function courseEmailListGeneratedButNonCourseEmailAddress()
+  {
+    $this->checkRegex('courseEmailList', 'rel-majors@gustavus.edu', 0);
+  }
+
 }
