@@ -8,223 +8,223 @@ require_once '/cis/lib/regex/regex.class.php';
  */
 class RegExTest extends PHPUnit_Framework_TestCase
 {
-    /**
-     * Sets up the fixture, for example, opens a network connection.
-     * This method is called before a test is executed.
-     * @return void
-     */
-    protected function setUp()
-    {
-    }
+  /**
+   * Sets up the fixture, for example, opens a network connection.
+   * This method is called before a test is executed.
+   * @return void
+   */
+  protected function setUp()
+  {
+  }
 
-    /**
-     * Tears down the fixture, for example, closes a network connection.
-     * This method is called after a test is executed.
-     * @return void
-     */
-    protected function tearDown()
-    {
-    }
+  /**
+   * Tears down the fixture, for example, closes a network connection.
+   * This method is called after a test is executed.
+   * @return void
+   */
+  protected function tearDown()
+  {
+  }
 
-    /**
-     * @param string $functionName
-     * @param string $testString
-     * @param integer $expectedValue
-     * @param array $expectedMatches
-     */
-    private function checkRegex($functionName, $testString, $expectedValue, array $expectedMatches = null)
-    {
-      $this->assertSame($expectedValue, preg_match(RegEx::$functionName(), $testString, $matches));
+  /**
+   * @param string $functionName
+   * @param string $testString
+   * @param integer $expectedValue
+   * @param array $expectedMatches
+   */
+  private function checkRegex($functionName, $testString, $expectedValue, array $expectedMatches = null)
+  {
+    $this->assertSame($expectedValue, preg_match(RegEx::$functionName(), $testString, $matches));
 
-      if (count($expectedMatches) > 0) {
-        foreach ($expectedMatches as $position => $expectedMatch) {
-          $this->assertSame($expectedMatch, $matches[$position]);
-        }
+    if (count($expectedMatches) > 0) {
+      foreach ($expectedMatches as $position => $expectedMatch) {
+        $this->assertSame($expectedMatch, $matches[$position]);
       }
     }
+  }
 
-    /**
-     * @test
-     */
-    public function urlNotUrl()
-    {
-      $this->checkRegex('url', 'This is not a URL.', 0);
-    }
+  /**
+   * @test
+   */
+  public function urlNotUrl()
+  {
+    $this->checkRegex('url', 'This is not a URL.', 0);
+  }
 
-    /**
-     * @test
-     */
-    public function urlSimpleEdu()
-    {
-      $this->checkRegex('url', 'http://gustavus.edu', 1);
-    }
+  /**
+   * @test
+   */
+  public function urlSimpleEdu()
+  {
+    $this->checkRegex('url', 'http://gustavus.edu', 1);
+  }
 
-    /**
-     * @test
-     */
-    public function urlSimpleEduWithPadding()
-    {
-      $this->checkRegex('url', 'http://gustavus.edu ', 1);
-    }
+  /**
+   * @test
+   */
+  public function urlSimpleEduWithPadding()
+  {
+    $this->checkRegex('url', 'http://gustavus.edu ', 1);
+  }
 
-    /**
-     * @test
-     */
-    public function urlSimpleEduInsideText()
-    {
-      $this->checkRegex('url', 'My website is at http://gustavus.edu now.', 1);
-    }
+  /**
+   * @test
+   */
+  public function urlSimpleEduInsideText()
+  {
+    $this->checkRegex('url', 'My website is at http://gustavus.edu now.', 1);
+  }
 
-    /**
-     * @test
-     */
-    public function urlWithPort()
-    {
-      $this->checkRegex('url', 'http://gustavus.edu:1234', 1);
-    }
+  /**
+   * @test
+   */
+  public function urlWithPort()
+  {
+    $this->checkRegex('url', 'http://gustavus.edu:1234', 1);
+  }
 
-    /**
-     * @test
-     */
-    public function urlWithSecure()
-    {
-      $this->checkRegex('url', 'https://gustavus.edu ', 1);
-    }
+  /**
+   * @test
+   */
+  public function urlWithSecure()
+  {
+    $this->checkRegex('url', 'https://gustavus.edu ', 1);
+  }
 
-    /**
-     * @test
-     */
-    public function urlWithSecureAndPort()
-    {
-      $this->checkRegex('url', 'https://gustavus.edu:1234 ', 1);
-    }
+  /**
+   * @test
+   */
+  public function urlWithSecureAndPort()
+  {
+    $this->checkRegex('url', 'https://gustavus.edu:1234 ', 1);
+  }
 
-    /**
-     * @test
-     */
-    public function urlWithDirectory()
-    {
-      $this->checkRegex('url', 'http://gustavus.edu/about/', 1);
-    }
+  /**
+   * @test
+   */
+  public function urlWithDirectory()
+  {
+    $this->checkRegex('url', 'http://gustavus.edu/about/', 1);
+  }
 
-    /**
-     * @test
-     */
-    public function urlWithDirectoryAndFile()
-    {
-      $this->checkRegex('url', 'http://gustavus.eduabout/index.php', 1);
-    }
+  /**
+   * @test
+   */
+  public function urlWithDirectoryAndFile()
+  {
+    $this->checkRegex('url', 'http://gustavus.eduabout/index.php', 1);
+  }
 
-    /**
-     * @test
-     */
-    public function urlWithSecurePortDirectoryAndFile()
-    {
-      $this->checkRegex('url', 'https://gustavus.edu:1234/about/index.php', 1);
-    }
+  /**
+   * @test
+   */
+  public function urlWithSecurePortDirectoryAndFile()
+  {
+    $this->checkRegex('url', 'https://gustavus.edu:1234/about/index.php', 1);
+  }
 
-    /**
-     * @test
-     */
-    public function urlWithSecurePortDirectoryAndFileInsideText()
-    {
-      $this->checkRegex('url', 'The best website ever is https://gustavus.edu:1234/about/index.php now.', 1);
-    }
+  /**
+   * @test
+   */
+  public function urlWithSecurePortDirectoryAndFileInsideText()
+  {
+    $this->checkRegex('url', 'The best website ever is https://gustavus.edu:1234/about/index.php now.', 1);
+  }
 
-    /**
-     * @test
-     */
-    public function imgHtml()
-    {
-      $this->checkRegex('img', '<img src="myimage.jpg">', 1, array('<img src="myimage.jpg">', 'myimage.jpg'));
-    }
+  /**
+   * @test
+   */
+  public function imgHtml()
+  {
+    $this->checkRegex('img', '<img src="myimage.jpg">', 1, array('<img src="myimage.jpg">', 'myimage.jpg'));
+  }
 
-    /**
-     * @test
-     */
-    public function imgXml()
-    {
-      $this->checkRegex('img', '<img src="myimage.jpg"/>', 1, array('<img src="myimage.jpg"/>', 'myimage.jpg'));
-    }
+  /**
+   * @test
+   */
+  public function imgXml()
+  {
+    $this->checkRegex('img', '<img src="myimage.jpg"/>', 1, array('<img src="myimage.jpg"/>', 'myimage.jpg'));
+  }
 
-    /**
-     * @test
-     */
-    public function emailAddressSimple()
-    {
-      $this->checkRegex('emailAddress', 'jlencion@gustavus.edu', 1, array('jlencion@gustavus.edu', 'jlencion', 'gustavus.edu'));
-    }
+  /**
+   * @test
+   */
+  public function emailAddressSimple()
+  {
+    $this->checkRegex('emailAddress', 'jlencion@gustavus.edu', 1, array('jlencion@gustavus.edu', 'jlencion', 'gustavus.edu'));
+  }
 
-    /**
-     * @test
-     */
-    public function emailAddressWithTag()
-    {
-      $this->checkRegex('emailAddress', 'jlencion+test@gustavus.edu', 1, array('jlencion+test@gustavus.edu', 'jlencion+test', 'gustavus.edu'));
-    }
+  /**
+   * @test
+   */
+  public function emailAddressWithTag()
+  {
+    $this->checkRegex('emailAddress', 'jlencion+test@gustavus.edu', 1, array('jlencion+test@gustavus.edu', 'jlencion+test', 'gustavus.edu'));
+  }
 
-    /**
-     * @test
-     */
-    public function gustavusEmailAddressWithGustavus()
-    {
-      $this->checkRegex('gustavusEmailAddress', 'jlencion@gustavus.edu', 1, array('jlencion@gustavus.edu', 'jlencion'));
-    }
+  /**
+   * @test
+   */
+  public function gustavusEmailAddressWithGustavus()
+  {
+    $this->checkRegex('gustavusEmailAddress', 'jlencion@gustavus.edu', 1, array('jlencion@gustavus.edu', 'jlencion'));
+  }
 
-    /**
-     * @test
-     */
-    public function gustavusEmailAddressWithGac()
-    {
-      $this->checkRegex('gustavusEmailAddress', 'jlencion@gac.edu', 1, array('jlencion@gac.edu', 'jlencion'));
-    }
+  /**
+   * @test
+   */
+  public function gustavusEmailAddressWithGac()
+  {
+    $this->checkRegex('gustavusEmailAddress', 'jlencion@gac.edu', 1, array('jlencion@gac.edu', 'jlencion'));
+  }
 
-    /**
-     * @test
-     */
-    public function gustavusEmailAddressWithGustavusAndTag()
-    {
-      $this->checkRegex('gustavusEmailAddress', 'jlencion+test@gustavus.edu', 1, array('jlencion+test@gustavus.edu', 'jlencion+test'));
-    }
+  /**
+   * @test
+   */
+  public function gustavusEmailAddressWithGustavusAndTag()
+  {
+    $this->checkRegex('gustavusEmailAddress', 'jlencion+test@gustavus.edu', 1, array('jlencion+test@gustavus.edu', 'jlencion+test'));
+  }
 
-    /**
-     * @test
-     */
-    public function gustavusEmailAddressWithGacAndTag()
-    {
-      $this->checkRegex('gustavusEmailAddress', 'jlencion+test@gac.edu', 1, array('jlencion+test@gac.edu', 'jlencion+test'));
-    }
+  /**
+   * @test
+   */
+  public function gustavusEmailAddressWithGacAndTag()
+  {
+    $this->checkRegex('gustavusEmailAddress', 'jlencion+test@gac.edu', 1, array('jlencion+test@gac.edu', 'jlencion+test'));
+  }
 
-    /**
-     * @test
-     */
-    public function gustavusEmailAddressWithNonGustavusEmailAddress()
-    {
-      $this->checkRegex('gustavusEmailAddress', 'joe.lencioni@gmail.com', 0);
-    }
+  /**
+   * @test
+   */
+  public function gustavusEmailAddressWithNonGustavusEmailAddress()
+  {
+    $this->checkRegex('gustavusEmailAddress', 'joe.lencioni@gmail.com', 0);
+  }
 
-    /**
-     * @test
-     */
-    public function generatedEmailListMajors()
-    {
-      $this->checkRegex('generatedEmailList', 'rel-majors@lists.gustavus.edu', 1, array('rel-majors@lists.gustavus.edu', 'rel-majors'));
-    }
+  /**
+   * @test
+   */
+  public function generatedEmailListMajors()
+  {
+    $this->checkRegex('generatedEmailList', 'rel-majors@lists.gustavus.edu', 1, array('rel-majors@lists.gustavus.edu', 'rel-majors'));
+  }
 
-    /**
-     * @test
-     */
-    public function generatedEmailListMinors()
-    {
-      $this->checkRegex('generatedEmailList', 'rel-minors@lists.gustavus.edu', 1, array('rel-minors@lists.gustavus.edu', 'rel-minors'));
-    }
+  /**
+   * @test
+   */
+  public function generatedEmailListMinors()
+  {
+    $this->checkRegex('generatedEmailList', 'rel-minors@lists.gustavus.edu', 1, array('rel-minors@lists.gustavus.edu', 'rel-minors'));
+  }
 
-    /**
-     * @test
-     */
-    public function generatedEmailListMajorsSophomores()
-    {
-      $this->checkRegex('generatedEmailList', 'rel-majors-sophomore@lists.gustavus.edu', 1, array('rel-majors-sophomore@lists.gustavus.edu', 'rel-majors-sophomore'));
-    }
+  /**
+   * @test
+   */
+  public function generatedEmailListMajorsSophomores()
+  {
+    $this->checkRegex('generatedEmailList', 'rel-majors-sophomore@lists.gustavus.edu', 1, array('rel-majors-sophomore@lists.gustavus.edu', 'rel-majors-sophomore'));
+  }
 
 }
