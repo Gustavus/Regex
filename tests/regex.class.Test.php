@@ -467,4 +467,28 @@ class RegExTest extends PHPUnit_Framework_TestCase
     $this->checkRegex('courseEmailList', 'rel-majors@gustavus.edu', 0);
   }
 
+  /**
+   * @test
+   */
+  public function adviseeEmailList()
+  {
+    $this->checkRegex('adviseeEmailList', 'jcha-advisees@lists.gustavus.edu', 1, array('jcha-advisees@lists.gustavus.edu', 'jcha-advisees'));
+  }
+
+  /**
+   * @test
+   */
+  public function adviseeEmailListNonGeneratedEmailAddress()
+  {
+    $this->checkRegex('adviseeEmailList', 'jlencion@gustavus.edu', 0);
+  }
+
+  /**
+   * @test
+   */
+  public function adviseeEmailListGeneratedButNonAdviseeEmailAddress()
+  {
+    $this->checkRegex('adviseeEmailList', 'rel-majors@gustavus.edu', 0);
+  }
+
 }
