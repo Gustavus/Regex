@@ -331,4 +331,92 @@ class RegExTest extends PHPUnit_Framework_TestCase
     $this->checkRegex('generatedEmailList', 'f-art-101-all@lists.gac.edu', 1, array('f-art-101-all@lists.gac.edu', 'f-art-101-all'));
   }
 
+  /**
+   * @test
+   */
+  public function generatedEmailListNonGeneratedEmailAddress()
+  {
+    $this->checkRegex('generatedEmailList', 'jlencion@gustavus.edu', 0);
+  }
+
+  /**
+   * @test
+   */
+  public function majorsOrMinorsEmailListMajors()
+  {
+    $this->checkRegex('majorsOrMinorsEmailList', 'rel-majors@lists.gustavus.edu', 1, array('rel-majors@lists.gustavus.edu', 'rel-majors'));
+  }
+
+  /**
+   * @test
+   */
+  public function majorsOrMinorsEmailListMinors()
+  {
+    $this->checkRegex('majorsOrMinorsEmailList', 'rel-minors@lists.gustavus.edu', 1, array('rel-minors@lists.gustavus.edu', 'rel-minors'));
+  }
+
+  /**
+   * @test
+   */
+  public function majorsOrMinorsEmailListMajorsSophomores()
+  {
+    $this->checkRegex('majorsOrMinorsEmailList', 'rel-majors-sophomore@lists.gustavus.edu', 1, array('rel-majors-sophomore@lists.gustavus.edu', 'rel-majors-sophomore'));
+  }
+
+  /**
+   * @test
+   */
+  public function majorsOrMinorsEmailListMajorsJuniors()
+  {
+    $this->checkRegex('majorsOrMinorsEmailList', 'rel-majors-junior@lists.gustavus.edu', 1, array('rel-majors-junior@lists.gustavus.edu', 'rel-majors-junior'));
+  }
+
+  /**
+   * @test
+   */
+  public function majorsOrMinorsEmailListMajorsSenior()
+  {
+    $this->checkRegex('majorsOrMinorsEmailList', 'rel-majors-senior@lists.gustavus.edu', 1, array('rel-majors-senior@lists.gustavus.edu', 'rel-majors-senior'));
+  }
+
+  /**
+   * @test
+   */
+  public function majorsOrMinorsEmailListMinorsSophomores()
+  {
+    $this->checkRegex('majorsOrMinorsEmailList', 'rel-minors-sophomore@lists.gustavus.edu', 1, array('rel-minors-sophomore@lists.gustavus.edu', 'rel-minors-sophomore'));
+  }
+
+  /**
+   * @test
+   */
+  public function majorsOrMinorsEmailListMinorsJuniors()
+  {
+    $this->checkRegex('majorsOrMinorsEmailList', 'rel-minors-junior@lists.gustavus.edu', 1, array('rel-minors-junior@lists.gustavus.edu', 'rel-minors-junior'));
+  }
+
+  /**
+   * @test
+   */
+  public function majorsOrMinorsEmailListMinorsSenior()
+  {
+    $this->checkRegex('majorsOrMinorsEmailList', 'rel-minors-senior@lists.gustavus.edu', 1, array('rel-minors-senior@lists.gustavus.edu', 'rel-minors-senior'));
+  }
+
+  /**
+   * @test
+   */
+  public function majorsOrMinorsEmailListNonGeneratedEmailAddress()
+  {
+    $this->checkRegex('majorsOrMinorsEmailList', 'jlencion@gustavus.edu', 0);
+  }
+
+  /**
+   * @test
+   */
+  public function majorsOrMinorsEmailListGeneratedButNonMajorsOrMinorsEmailAddress()
+  {
+    $this->checkRegex('majorsOrMinorsEmailList', 'f-art-101-001@gustavus.edu', 0);
+  }
+
 }
