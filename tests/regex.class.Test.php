@@ -27,11 +27,28 @@ class RegExTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param string $functionName
+     * @param string $testString
+     * @param integer $expectedValue
+     * @param array $expectedMatches
+     */
+    private function checkRegex($functionName, $testString, $expectedValue, array $expectedMatches = null)
+    {
+      $this->assertSame($expectedValue, preg_match(RegEx::$functionName(), $testString, $matches));
+
+      if (count($expectedMatches) > 0) {
+        foreach ($expectedMatches as $position => $expectedMatch) {
+          $this->assertSame($expectedMatch, $matches[$position]);
+        }
+      }
+    }
+
+    /**
      * @test
      */
     public function urlNotUrl()
     {
-      $this->assertSame(0, preg_match(RegEx::url(), 'This is not a URL.'));
+      $this->checkRegex('url', 'This is not a URL.', 0);
     }
 
     /**
@@ -39,7 +56,7 @@ class RegExTest extends PHPUnit_Framework_TestCase
      */
     public function urlSimpleEdu()
     {
-      $this->assertSame(1, preg_match(RegEx::url(), 'http://gustavus.edu'));
+      $this->checkRegex('url', 'http://gustavus.edu', 1);
     }
 
     /**
@@ -47,7 +64,7 @@ class RegExTest extends PHPUnit_Framework_TestCase
      */
     public function urlSimpleEduWithPadding()
     {
-      $this->assertSame(1, preg_match(RegEx::url(), ' http://gustavus.edu '));
+      $this->checkRegex('url', 'http://gustavus.edu ', 1);
     }
 
     /**
@@ -55,7 +72,7 @@ class RegExTest extends PHPUnit_Framework_TestCase
      */
     public function urlSimpleEduInsideText()
     {
-      $this->assertSame(1, preg_match(RegEx::url(), 'My website is at http://gustavus.edu now.'));
+      $this->checkRegex('url', 'My website is at http://gustavus.edu now.', 1);
     }
 
     /**
@@ -63,7 +80,7 @@ class RegExTest extends PHPUnit_Framework_TestCase
      */
     public function urlWithPort()
     {
-      $this->assertSame(1, preg_match(RegEx::url(), 'http://gustavus.edu:1234'));
+      $this->checkRegex('url', 'http://gustavus.edu:1234', 1);
     }
 
     /**
@@ -71,7 +88,7 @@ class RegExTest extends PHPUnit_Framework_TestCase
      */
     public function urlWithSecure()
     {
-      $this->assertSame(1, preg_match(RegEx::url(), 'https://gustavus.edu'));
+      $this->checkRegex('url', 'https://gustavus.edu ', 1);
     }
 
     /**
@@ -79,7 +96,7 @@ class RegExTest extends PHPUnit_Framework_TestCase
      */
     public function urlWithSecureAndPort()
     {
-      $this->assertSame(1, preg_match(RegEx::url(), 'https://gustavus.edu:1234'));
+      $this->checkRegex('url', 'https://gustavus.edu:1234 ', 1);
     }
 
     /**
@@ -87,7 +104,7 @@ class RegExTest extends PHPUnit_Framework_TestCase
      */
     public function urlWithDirectory()
     {
-      $this->assertSame(1, preg_match(RegEx::url(), 'http://gustavus.edu/about/'));
+      $this->checkRegex('url', 'http://gustavus.edu/about/', 1);
     }
 
     /**
@@ -95,7 +112,7 @@ class RegExTest extends PHPUnit_Framework_TestCase
      */
     public function urlWithDirectoryAndFile()
     {
-      $this->assertSame(1, preg_match(RegEx::url(), 'http://gustavus.edu/about/index.php'));
+      $this->checkRegex('url', 'http://gustavus.eduabout/index.php', 1);
     }
 
     /**
@@ -103,7 +120,7 @@ class RegExTest extends PHPUnit_Framework_TestCase
      */
     public function urlWithSecurePortDirectoryAndFile()
     {
-      $this->assertSame(1, preg_match(RegEx::url(), 'https://gustavus.edu:1234/about/index.php'));
+      $this->checkRegex('url', 'https://gustavus.edu:1234/about/index.php', 1);
     }
 
     /**
@@ -111,7 +128,7 @@ class RegExTest extends PHPUnit_Framework_TestCase
      */
     public function urlWithSecurePortDirectoryAndFileInsideText()
     {
-      $this->assertSame(1, preg_match(RegEx::url(), 'The best website ever is https://gustavus.edu:1234/about/index.php now.'));
+      $this->checkRegex('url', 'The best website ever is https://gustavus.edu:1234/about/index.php now.', 1);
     }
 
     /**
@@ -119,9 +136,7 @@ class RegExTest extends PHPUnit_Framework_TestCase
      */
     public function imgHtml()
     {
-      $this->assertSame(1, preg_match(RegEx::img(), '<img src="myimage.jpg">', $matches));
-      $this->assertSame('<img src="myimage.jpg">', $matches[0]);
-      $this->assertSame('myimage.jpg', $matches[1]);
+      $this->checkRegex('img', '<img src="myimage.jpg">', 1, array('<img src="myimage.jpg">', 'myimage.jpg'));
     }
 
     /**
@@ -129,9 +144,7 @@ class RegExTest extends PHPUnit_Framework_TestCase
      */
     public function imgXml()
     {
-      $this->assertSame(1, preg_match(RegEx::img(), '<img src="myimage.jpg"/>', $matches));
-      $this->assertSame('<img src="myimage.jpg"/>', $matches[0]);
-      $this->assertSame('myimage.jpg', $matches[1]);
+      $this->checkRegex('img', '<img src="myimage.jpg"/>', 1, array('<img src="myimage.jpg"/>', 'myimage.jpg'));
     }
 
     /**
@@ -139,10 +152,7 @@ class RegExTest extends PHPUnit_Framework_TestCase
      */
     public function emailAddressSimple()
     {
-      $this->assertSame(1, preg_match(RegEx::emailAddress(), 'jlencion@gustavus.edu', $matches));
-      $this->assertSame('jlencion@gustavus.edu', $matches[0]);
-      $this->assertSame('jlencion', $matches[1]);
-      $this->assertSame('gustavus.edu', $matches[2]);
+      $this->checkRegex('emailAddress', 'jlencion@gustavus.edu', 1, array('jlencion@gustavus.edu', 'jlencion', 'gustavus.edu'));
     }
 
     /**
@@ -150,10 +160,7 @@ class RegExTest extends PHPUnit_Framework_TestCase
      */
     public function emailAddressWithTag()
     {
-      $this->assertSame(1, preg_match(RegEx::emailAddress(), 'jlencion+test@gustavus.edu', $matches));
-      $this->assertSame('jlencion+test@gustavus.edu', $matches[0]);
-      $this->assertSame('jlencion+test', $matches[1]);
-      $this->assertSame('gustavus.edu', $matches[2]);
+      $this->checkRegex('emailAddress', 'jlencion+test@gustavus.edu', 1, array('jlencion+test@gustavus.edu', 'jlencion+test', 'gustavus.edu'));
     }
 
     /**
@@ -161,9 +168,7 @@ class RegExTest extends PHPUnit_Framework_TestCase
      */
     public function gustavusEmailAddressWithGustavus()
     {
-      $this->assertSame(1, preg_match(RegEx::gustavusEmailAddress(), 'jlencion@gustavus.edu', $matches));
-      $this->assertSame('jlencion@gustavus.edu', $matches[0]);
-      $this->assertSame('jlencion', $matches[1]);
+      $this->checkRegex('gustavusEmailAddress', 'jlencion@gustavus.edu', 1, array('jlencion@gustavus.edu', 'jlencion'));
     }
 
     /**
@@ -171,9 +176,7 @@ class RegExTest extends PHPUnit_Framework_TestCase
      */
     public function gustavusEmailAddressWithGac()
     {
-      $this->assertSame(1, preg_match(RegEx::gustavusEmailAddress(), 'jlencion@gac.edu', $matches));
-      $this->assertSame('jlencion@gac.edu', $matches[0]);
-      $this->assertSame('jlencion', $matches[1]);
+      $this->checkRegex('gustavusEmailAddress', 'jlencion@gac.edu', 1, array('jlencion@gac.edu', 'jlencion'));
     }
 
     /**
@@ -181,9 +184,7 @@ class RegExTest extends PHPUnit_Framework_TestCase
      */
     public function gustavusEmailAddressWithGustavusAndTag()
     {
-      $this->assertSame(1, preg_match(RegEx::gustavusEmailAddress(), 'jlencion+test@gustavus.edu', $matches));
-      $this->assertSame('jlencion+test@gustavus.edu', $matches[0]);
-      $this->assertSame('jlencion+test', $matches[1]);
+      $this->checkRegex('gustavusEmailAddress', 'jlencion+test@gustavus.edu', 1, array('jlencion+test@gustavus.edu', 'jlencion+test'));
     }
 
     /**
@@ -191,9 +192,7 @@ class RegExTest extends PHPUnit_Framework_TestCase
      */
     public function gustavusEmailAddressWithGacAndTag()
     {
-      $this->assertSame(1, preg_match(RegEx::gustavusEmailAddress(), 'jlencion+test@gac.edu', $matches));
-      $this->assertSame('jlencion+test@gac.edu', $matches[0]);
-      $this->assertSame('jlencion+test', $matches[1]);
+      $this->checkRegex('gustavusEmailAddress', 'jlencion+test@gac.edu', 1, array('jlencion+test@gac.edu', 'jlencion+test'));
     }
 
     /**
@@ -201,7 +200,31 @@ class RegExTest extends PHPUnit_Framework_TestCase
      */
     public function gustavusEmailAddressWithNonGustavusEmailAddress()
     {
-      $this->assertSame(0, preg_match(RegEx::gustavusEmailAddress(), 'joe.lencioni@gmail.com', $matches));
+      $this->checkRegex('gustavusEmailAddress', 'joe.lencioni@gmail.com', 0);
+    }
+
+    /**
+     * @test
+     */
+    public function generatedEmailListMajors()
+    {
+      $this->checkRegex('generatedEmailList', 'rel-majors@lists.gustavus.edu', 1, array('rel-majors@lists.gustavus.edu', 'rel-majors'));
+    }
+
+    /**
+     * @test
+     */
+    public function generatedEmailListMinors()
+    {
+      $this->checkRegex('generatedEmailList', 'rel-minors@lists.gustavus.edu', 1, array('rel-minors@lists.gustavus.edu', 'rel-minors'));
+    }
+
+    /**
+     * @test
+     */
+    public function generatedEmailListMajorsSophomores()
+    {
+      $this->checkRegex('generatedEmailList', 'rel-majors-sophomore@lists.gustavus.edu', 1, array('rel-majors-sophomore@lists.gustavus.edu', 'rel-majors-sophomore'));
     }
 
 }
