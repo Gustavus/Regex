@@ -227,4 +227,44 @@ class RegExTest extends PHPUnit_Framework_TestCase
     $this->checkRegex('generatedEmailList', 'rel-majors-sophomore@lists.gustavus.edu', 1, array('rel-majors-sophomore@lists.gustavus.edu', 'rel-majors-sophomore'));
   }
 
+  /**
+   * @test
+   */
+  public function generatedEmailListMajorsJuniors()
+  {
+    $this->checkRegex('generatedEmailList', 'rel-majors-junior@lists.gustavus.edu', 1, array('rel-majors-junior@lists.gustavus.edu', 'rel-majors-junior'));
+  }
+
+  /**
+   * @test
+   */
+  public function generatedEmailListMajorsSenior()
+  {
+    $this->checkRegex('generatedEmailList', 'rel-majors-senior@lists.gustavus.edu', 1, array('rel-majors-senior@lists.gustavus.edu', 'rel-majors-senior'));
+  }
+
+  /**
+   * @test
+   */
+  public function generatedEmailListMinorsSophomores()
+  {
+    $this->checkRegex('generatedEmailList', 'rel-minors-sophomore@lists.gustavus.edu', 1, array('rel-minors-sophomore@lists.gustavus.edu', 'rel-minors-sophomore'));
+  }
+
+  /**
+   * @test
+   */
+  public function generatedEmailListMinorsJuniors()
+  {
+    $this->checkRegex('generatedEmailList', 'rel-minors-junior@lists.gustavus.edu', 1, array('rel-minors-junior@lists.gustavus.edu', 'rel-minors-junior'));
+  }
+
+  /**
+   * @test
+   */
+  public function generatedEmailListMinorsSenior()
+  {
+    $this->checkRegex('generatedEmailList', 'rel-minors-senior@lists.gustavus.edu', 1, array('rel-minors-senior@lists.gustavus.edu', 'rel-minors-senior'));
+  }
+
 }
