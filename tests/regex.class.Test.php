@@ -267,4 +267,68 @@ class RegExTest extends PHPUnit_Framework_TestCase
     $this->checkRegex('generatedEmailList', 'rel-minors-senior@lists.gustavus.edu', 1, array('rel-minors-senior@lists.gustavus.edu', 'rel-minors-senior'));
   }
 
+  /**
+   * @test
+   */
+  public function generatedEmailListFallCourseAlias()
+  {
+    $this->checkRegex('generatedEmailList', 'f-art-101-001@lists.gustavus.edu', 1, array('f-art-101-001@lists.gustavus.edu', 'f-art-101-001'));
+  }
+
+  /**
+   * @test
+   */
+  public function generatedEmailListJanuaryCourseAlias()
+  {
+    $this->checkRegex('generatedEmailList', 'jt-art-101-001@lists.gustavus.edu', 1, array('jt-art-101-001@lists.gustavus.edu', 'jt-art-101-001'));
+  }
+
+  /**
+   * @test
+   */
+  public function generatedEmailListSpringCourseAlias()
+  {
+    $this->checkRegex('generatedEmailList', 's-art-101-001@lists.gustavus.edu', 1, array('s-art-101-001@lists.gustavus.edu', 's-art-101-001'));
+  }
+
+  /**
+   * @test
+   */
+  public function generatedEmailListSpringCourseAliasAllSections()
+  {
+    $this->checkRegex('generatedEmailList', 's-art-101-all@lists.gustavus.edu', 1, array('s-art-101-all@lists.gustavus.edu', 's-art-101-all'));
+  }
+
+  /**
+   * @test
+   */
+  public function generatedEmailAdvisees()
+  {
+    $this->checkRegex('generatedEmailList', 'jcha-advisees@lists.gustavus.edu', 1, array('jcha-advisees@lists.gustavus.edu', 'jcha-advisees'));
+  }
+
+  /**
+   * @test
+   */
+  public function generatedEmailListGustavusDomain()
+  {
+    $this->checkRegex('generatedEmailList', 'f-art-101-all@gustavus.edu', 1, array('f-art-101-all@gustavus.edu', 'f-art-101-all'));
+  }
+
+  /**
+   * @test
+   */
+  public function generatedEmailListGacDomain()
+  {
+    $this->checkRegex('generatedEmailList', 'f-art-101-all@gac.edu', 1, array('f-art-101-all@gac.edu', 'f-art-101-all'));
+  }
+
+  /**
+   * @test
+   */
+  public function generatedEmailListListsGacDomain()
+  {
+    $this->checkRegex('generatedEmailList', 'f-art-101-all@lists.gac.edu', 1, array('f-art-101-all@lists.gac.edu', 'f-art-101-all'));
+  }
+
 }
