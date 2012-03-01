@@ -1,5 +1,7 @@
 <?php
-class RegEx
+namespace Gustavus\Regex;
+
+class Regex
 {
 
   /**
