@@ -1,14 +1,14 @@
 <?php
 
-namespace Gustavus\RegEx\Test;
-use RegEx;
+namespace Gustavus\Regex\Test;
 
-require_once '/cis/lib/regex/regex.class.php';
+use Gustavus\Regex\Regex;
+
 
 /**
  * Test class for RegEx
  */
-class RegExTest extends \PHPUnit_Framework_TestCase
+class RegexTest extends \PHPUnit_Framework_TestCase
 {
   /**
    * Sets up the fixture, for example, opens a network connection.
@@ -36,7 +36,7 @@ class RegExTest extends \PHPUnit_Framework_TestCase
    */
   private function checkRegex($functionName, $testString, $expectedValue, array $expectedMatches = null)
   {
-    $this->assertSame($expectedValue, preg_match(RegEx::$functionName(), $testString, $matches));
+    $this->assertSame($expectedValue, preg_match(Regex::$functionName(), $testString, $matches));
 
     if (count($expectedMatches) > 0) {
       foreach ($expectedMatches as $position => $expectedMatch) {
