@@ -186,7 +186,7 @@ class Regex
   {
     return '{
       ^
-      (
+      (?:
         # Match any set of consecutive digits
         \d+
 
