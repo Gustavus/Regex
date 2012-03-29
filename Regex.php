@@ -176,4 +176,28 @@ class Regex
       $
     }xi';
   }
+
+  /**
+   * [0] => house number
+   *
+   * @return string
+   */
+  final public static function houseNumber()
+  {
+    return '{
+      ^
+      (
+        # Match any set of consecutive digits
+        \d+
+
+        (?:
+          # Optionally followed by spaces or hyphens and a fraction
+          [\s\-]+\d/\d\b
+
+          # That cannot be followed by a set of letters and a comma or period
+          (?!\s+[a-zA-Z]+[,\.])
+        )?
+      )
+    }x';
+  }
 }

@@ -493,4 +493,32 @@ class RegexTest extends \PHPUnit_Framework_TestCase
     $this->checkRegex('adviseeEmailList', 'rel-majors@gustavus.edu', 0);
   }
 
+  /**
+   * @return array
+   */
+  public static function houseNumberData()
+  {
+    return array(
+      array('10141 313th Ave, Princeton, MN 55371', 1, array('10141')),
+      array('9409 Hwy 1, City, ST 12345', 1, array('9409')),
+      array('826 9th St. N, St. Peter, MN 56082', 1, array('826')),
+      array('120 1/2 Louisiana Ave, City, ST 12345', 1, array('120 1/2')),
+      array('1234 9 mile road, City, ST 12345', 1, array('1234')),
+      array('1234 1/2 St, City, ST 12345', 1, array('1234')),
+      array('1234-1/2 Hwy 1, City, ST 12345', 1, array('1234-1/2')),
+    );
+  }
+
+  /**
+   * @test
+   * @dataProvider houseNumberData
+   * @param string $testString
+   * @param string $expectedValue
+   * @param array $matches
+   */
+  public function houseNumber($testString, $expectedValue, $matches)
+  {
+    $this->checkRegex('houseNumber', $testString, $expectedValue, $matches);
+  }
+
 }
