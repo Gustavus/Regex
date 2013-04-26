@@ -200,4 +200,82 @@ class Regex
       )
     }x';
   }
+
+
+  /**
+   * Builds a regular expression that can be used to validate a URI according to RFC3986 and
+   * RFC6874.
+   *
+   * Since function uses a fair amount of allocation and concatenation, the value returned should
+   * generally be stored and reused, rather than re-building it on each use.
+   *
+   * The capture groups for the expression are as follows:
+   * <ul>
+   *  <li>0: complete uri</li>
+   *  <li>1: scheme</li>
+   *  <li>2: hierarchical components</li>
+   *  <li>3: query</li>
+   *  <li>4: fragment</li>
+   * </ul>
+   *
+   * @return string
+   *  A regular expression capable of validating URIs.
+   */
+  public static function uri()
+  {
+    //   foo://example.com:8042/over/there?name=ferret#nose
+    //   \_/   \______________/\_________/ \_________/ \__/
+    //    |           |            |            |        |
+    // scheme     authority       path        query   fragment
+    //    |   _____________________|__
+    //   / \ /                        \
+    //   urn:example:animal:ferret:nose
+
+    $pctencoded   = '%[A-Fa-f0-9]{2}';
+    $gendelims    = '[:/?#\\[\\]@]';
+    $subdelims    = '[!$&\'()*+,;=]';
+    $reserved     = "(?:{$gendelims}|{$subdelims})";
+    $unreserved   = '[A-Za-z0-9.\\-_~]';
+    $scheme       = '[A-Za-z][A-Za-z0-9+.\\-]*';
+    $userinfo     = "(?:{$unreserved}|{$pctencoded}|{$subdelims}|:)*";
+
+    $decoctet     = '(?:[0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])';
+    $ipv4address  = "{$decoctet}\\.{$decoctet}\\.{$decoctet}\\.{$decoctet}";
+
+    $h16          = '[A-Fa-f0-9]{1,4}';
+    $ls32         = "(?:{$h16}:{$h16}|{$ipv4address})";
+    $ipv6address  = "(?:(?:{$h16}:){6}{$ls32}|::(?:{$h16}:){5}{$ls32}|{$h16}?::(?:{$h16}:){4}{$ls32}|(?:(?:{$h16}:){0,1}{$h16})?::(?:{$h16}:){3}{$ls32}|(?:(?:{$h16}:){0,2}{$h16})?::(?:{$h16}:){2}{$ls32}|(?:(?:{$h16}:){0,3}{$h16})?::{$h16}:{$ls32}|(?:(?:{$h16}:){0,4}{$h16})?::{$ls32}|(?:(?:{$h16}:){0,5}{$h16})?::{$h16}|(?:(?:{$h16}:){0,6}{$h16})?::)";
+    $zoneid       = "(?:{$unreserved}|{$pctencoded})+";
+    $ipv6addrz    = "{$ipv6address}%25{$zoneid}";
+
+    $ipvfuture    = "(?:v[A-Fa-f0-9]+\\.(?:{$unreserved}|{$subdelims}|:)+)";
+    $ipliteral    = "\\[(?:{$ipv6address}|{$ipv6addrz}|{$ipvfuture})\\]";
+
+    $regname      = "(?:{$unreserved}|{$pctencoded}|{$subdelims})*";
+
+    $host         = "(?:{$ipliteral}|{$ipv4address}|{$regname})";
+    $port         = '[0-9]*';
+
+    $authority    = "(?:{$userinfo}@)?{$host}(?::{$port})?";
+
+    $pchar        = "(?:{$unreserved}|{$pctencoded}|{$subdelims}|:|@)";
+    $segment      = "{$pchar}*";
+    $segmentnz    = "{$pchar}+";
+    $segmentnznc  = "(?:{$unreserved}|{$pctencoded}|{$subdelims}|@)+";
+
+    $pathabempty  = "(?:\\/{$segment})*";
+    $pathabsolute = "\\/(?:{$segmentnz}{$pathabempty})?";
+    $pathnoscheme = "{$segmentnznc}{$pathabempty}";
+    $pathrootless = "{$segmentnz}{$pathabempty}";
+
+    $path         = "(?:{$pathabempty}|{$pathabsolute}|{$pathnoscheme}|{$pathrootless})?";
+
+    $qfcomponent  = "(?:{$pchar}|\\/|\\?)*";
+
+    $heirpart     = "(?:\\/\\/{$authority}{$pathabempty}|{$pathabsolute}|{$pathrootless})?";
+
+    $uri          = "/^({$scheme}):({$heirpart})((?:\\?{$qfcomponent})?)((?:#{$qfcomponent})?)$/";
+
+    return $uri;
+  }
 }
