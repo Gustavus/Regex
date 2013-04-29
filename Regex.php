@@ -274,7 +274,7 @@ class Regex
 
     $heirpart     = "(?:\\/\\/{$authority}{$pathabempty}|{$pathabsolute}|{$pathrootless})?";
 
-    $uri          = "/^({$scheme}):({$heirpart})((?:\\?{$qfcomponent})?)((?:#{$qfcomponent})?)$/";
+    $uri          = "/\\A(?:({$scheme}):({$heirpart})((?:\\?{$qfcomponent})?)((?:#{$qfcomponent})?))\\z/";
 
     return $uri;
   }
