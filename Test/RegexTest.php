@@ -154,7 +154,7 @@ class RegexTest extends \PHPUnit_Framework_TestCase
    */
   public function emailAddressSimple()
   {
-    $this->checkRegex('emailAddress', 'jlencion@gustavus.edu', 1, array('jlencion@gustavus.edu', 'jlencion', 'gustavus.edu'));
+    $this->checkRegex('emailAddress', 'bvisto@gustavus.edu', 1, array('bvisto@gustavus.edu', 'bvisto', 'gustavus.edu'));
   }
 
   /**
@@ -162,7 +162,7 @@ class RegexTest extends \PHPUnit_Framework_TestCase
    */
   public function emailAddressWithTag()
   {
-    $this->checkRegex('emailAddress', 'jlencion+test@gustavus.edu', 1, array('jlencion+test@gustavus.edu', 'jlencion+test', 'gustavus.edu'));
+    $this->checkRegex('emailAddress', 'bvisto+test@gustavus.edu', 1, array('bvisto+test@gustavus.edu', 'bvisto+test', 'gustavus.edu'));
   }
 
   /**
@@ -170,7 +170,7 @@ class RegexTest extends \PHPUnit_Framework_TestCase
    */
   public function gustavusEmailAddressWithGustavus()
   {
-    $this->checkRegex('gustavusEmailAddress', 'jlencion@gustavus.edu', 1, array('jlencion@gustavus.edu', 'jlencion'));
+    $this->checkRegex('gustavusEmailAddress', 'bvisto@gustavus.edu', 1, array('bvisto@gustavus.edu', 'bvisto'));
   }
 
   /**
@@ -178,7 +178,7 @@ class RegexTest extends \PHPUnit_Framework_TestCase
    */
   public function gustavusEmailAddressWithGac()
   {
-    $this->checkRegex('gustavusEmailAddress', 'jlencion@gac.edu', 1, array('jlencion@gac.edu', 'jlencion'));
+    $this->checkRegex('gustavusEmailAddress', 'bvisto@gac.edu', 1, array('bvisto@gac.edu', 'bvisto'));
   }
 
   /**
@@ -186,7 +186,7 @@ class RegexTest extends \PHPUnit_Framework_TestCase
    */
   public function gustavusEmailAddressWithGustavusAndTag()
   {
-    $this->checkRegex('gustavusEmailAddress', 'jlencion+test@gustavus.edu', 1, array('jlencion+test@gustavus.edu', 'jlencion+test'));
+    $this->checkRegex('gustavusEmailAddress', 'bvisto+test@gustavus.edu', 1, array('bvisto+test@gustavus.edu', 'bvisto+test'));
   }
 
   /**
@@ -194,7 +194,7 @@ class RegexTest extends \PHPUnit_Framework_TestCase
    */
   public function gustavusEmailAddressWithGacAndTag()
   {
-    $this->checkRegex('gustavusEmailAddress', 'jlencion+test@gac.edu', 1, array('jlencion+test@gac.edu', 'jlencion+test'));
+    $this->checkRegex('gustavusEmailAddress', 'bvisto+test@gac.edu', 1, array('bvisto+test@gac.edu', 'bvisto+test'));
   }
 
   /**
@@ -338,7 +338,7 @@ class RegexTest extends \PHPUnit_Framework_TestCase
    */
   public function generatedEmailListNonGeneratedEmailAddress()
   {
-    $this->checkRegex('generatedEmailList', 'jlencion@gustavus.edu', 0);
+    $this->checkRegex('generatedEmailList', 'bvisto@gustavus.edu', 0);
   }
 
   /**
@@ -410,7 +410,7 @@ class RegexTest extends \PHPUnit_Framework_TestCase
    */
   public function majorsOrMinorsEmailListNonGeneratedEmailAddress()
   {
-    $this->checkRegex('majorsOrMinorsEmailList', 'jlencion@gustavus.edu', 0);
+    $this->checkRegex('majorsOrMinorsEmailList', 'bvisto@gustavus.edu', 0);
   }
 
   /**
@@ -458,7 +458,7 @@ class RegexTest extends \PHPUnit_Framework_TestCase
    */
   public function courseEmailListNonGeneratedEmailAddress()
   {
-    $this->checkRegex('courseEmailList', 'jlencion@gustavus.edu', 0);
+    $this->checkRegex('courseEmailList', 'bvisto@gustavus.edu', 0);
   }
 
   /**
@@ -482,7 +482,7 @@ class RegexTest extends \PHPUnit_Framework_TestCase
    */
   public function adviseeEmailListNonGeneratedEmailAddress()
   {
-    $this->checkRegex('adviseeEmailList', 'jlencion@gustavus.edu', 0);
+    $this->checkRegex('adviseeEmailList', 'bvisto@gustavus.edu', 0);
   }
 
   /**
@@ -521,4 +521,31 @@ class RegexTest extends \PHPUnit_Framework_TestCase
     $this->checkRegex('houseNumber', $testString, $expectedValue, $matches);
   }
 
+  /**
+   * @test
+   * @dataProvider dataForURIRegex
+   */
+  public function testURIRegex($value, $expected)
+  {
+    $this->checkRegex('uri', $value, $expected);
+  }
+
+  public function dataForURIRegex()
+  {
+    return [
+      ['http://stackoverflow.com/questions/5496656/check-if-item-can-be-converted-to-string', 1],
+      ['http://tools.ietf.org/html/rfc3986#section-3', 1],
+      ['http://63.197.151.31/blog/machine-learning-and-link-spam-my-brush-with-insanity', 1],
+      ['http://www.smashingapps.com/2009/01/13/11-great-hidden-things-google-can-do-that-you-should-know.html', 1],
+      ['http://[FEDC:BA98:7654:3210:FEDC:BA98:7654:3210]:80/index.html', 1],
+      ['http://hq.squidoo.com/squid-news/make-a-lens-win-a-monkey-well-sort-of/', 1],
+      ['http://[fec0::abcd%251]/', 1],
+      ['http://tinyurl.com/', 1],
+      ['http://www.squidoo.com/how-to-write-and-self-publish-your-first-book', 1],
+      ['https://www.google.com/search?q=restaurants&tbm=plcs', 1],
+
+      ['blarghbaduri', 0],
+      ['www.noscheme.com/is/no/good', 0]
+    ];
+  }
 }
