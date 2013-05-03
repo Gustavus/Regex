@@ -571,12 +571,12 @@ class RegexTest extends \PHPUnit_Framework_TestCase
   public function dataForPhoneURIRegex()
   {
     return [
-      ['867-5309', 1],
-      ['tel:+1-555-438-3732', 1],
-      ['tel:+1-555-438-3732;ext=1234', 1],
-      ['tel:7042;phone-context=example.com', 1],
-      ['tel:1234;phone-context=munich.example.com', 1],
-      ['tel:863-1234;phone-context=+1-914-555', 1],
+      ['867-5309', 1, ['', '867-5309']],
+      ['tel:+1-555-438-3732', 1, ['tel:', '+1-555-438-3732']],
+      ['tel:+1-555-438-3732;ext=1234', 1, ['tel:', '+1-555-438-3732;ext=1234']],
+      ['tel:7042;phone-context=example.com', 1, ['tel:', '7042;phone-context=example.com']],
+      ['tel:1234;phone-context=munich.example.com', 1, ['tel:', '1234;phone-context=munich.example.com']],
+      ['tel:863-1234;phone-context=+1-914-555', 1, ['tel:', '863-1234;phone-context=+1-914-555']],
 
       ['blarghbadphonenumber', 0]
     ];
