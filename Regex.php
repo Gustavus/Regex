@@ -314,18 +314,18 @@ class Regex
     $reserved             = '[;\\/?:@&=+$,]';
     $visualseparator      = '[\\-.()]';
 
-    $domainlabel          = "(?:{$alphanum}(?(?{$alphanum}|-)*{$alphanum})?)";
+    $domainlabel          = "(?:{$alphanum}(?:(?:{$alphanum}|-)*{$alphanum})?)";
     $pctencoded           = "(?:%{$hexdig}{$hexdig})";
-    $phonedigit           = "(?:[0-9|{$visualseparator})";
-    $phonedigithex        = "(?:{$hexdig}|[*#]|{$visualseparator})";
+    $phonedigit           = "(?:[0-9]|{$visualseparator}?)";
+    $phonedigithex        = "(?:{$hexdig}|[*#]|{$visualseparator}?)";
     $pname                = "(?:(?:{$alphanum}|-)+)";
-    $toplabel             = "(?:[A-Za-z](?(?{$alphanum}|-)*{$alphanum})?)";
+    $toplabel             = "(?:[A-Za-z](?:(?:{$alphanum}|-)*{$alphanum})?)";
     $unreserved           = "(?:{$alphanum}|{$mark})";
 
     $domainname           = "(?:(?:{$domainlabel}\\.)*{$toplabel}\\.?)";
     $extension            = "(?:;ext={$phonedigit}+)";
-    $globalnumberdigits   = "(?:+{$phonedigit}*[0-9]{$phonedigit}*)";
-    $localnumberdigits    = "(?:{$phonedigithex}*(?{$hexdig}|[*#]){$phonedigithex}*)";
+    $globalnumberdigits   = "(?:\\+{$phonedigit}*[0-9]{$phonedigit}*)";
+    $localnumberdigits    = "(?:{$phonedigithex}*(?:{$hexdig}|[*#]){$phonedigithex}*)";
     $paramchar            = "(?:{$paramunreserved}|{$unreserved}|{$pctencoded})";
     $uric                 = "(?:{$reserved}|{$unreserved}|{$pctencoded})";
 
@@ -339,7 +339,7 @@ class Regex
     $par                  = "(?:{$parameter}|{$extension}|{$isdnsubaddress})";
 
     $globalnumber         = "(?:{$globalnumberdigits}{$par}*)";
-    $localnumber          = "(?:{$localnumberdigits}{$par}*{$contenxt}{$par}*)";
+    $localnumber          = "(?:{$localnumberdigits}{$par}*{$context}{$par}*)";
 
     $telephonesubscriber  = "(?:{$globalnumber}|{$localnumber})";
 
@@ -347,5 +347,7 @@ class Regex
     // The "tel:" portion is optional because we're expecting semi-incomplete input. This does not
     // follow the RFC3966 specification.
     $telephoneuri         = "/\\A(tel:)?({$telephonesubscriber})\\z/i";
+
+    return $telephoneuri;
   }
 }
