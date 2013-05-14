@@ -530,6 +530,11 @@ class RegexTest extends \PHPUnit_Framework_TestCase
     $this->checkRegex('uri', $value, $expected);
   }
 
+  /**
+   * Data provider for the testURIRegex test.
+   *
+   * @return array
+   */
   public function dataForURIRegex()
   {
     return [
@@ -543,9 +548,38 @@ class RegexTest extends \PHPUnit_Framework_TestCase
       ['http://tinyurl.com/', 1],
       ['http://www.squidoo.com/how-to-write-and-self-publish-your-first-book', 1],
       ['https://www.google.com/search?q=restaurants&tbm=plcs', 1],
+      ['data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQAQMAAAAlPW0iAAAABlBMVEUAAAD///+l2Z/dAAAAM0lEQVR4nGP4/5/h/1+G/58ZDrAz3D/McH8yw83NDDeNGe4Ug9C9zwz3gVLMDA/A6P9/AFGGFyjOXZtQAAAAAElFTkSuQmCC', 1],
 
       ['blarghbaduri', 0],
       ['www.noscheme.com/is/no/good', 0]
+    ];
+  }
+
+  /**
+   * @test
+   * @dataProvider dataForURIRegex
+   */
+  public function testPhoneURIRegex($value, $expected)
+  {
+    $this->checkRegex('uri', $value, $expected);
+  }
+
+  /**
+   * Data provider for the testPhoneURIRegex test.
+   *
+   * @return array
+   */
+  public function dataForPhoneURIRegex()
+  {
+    return [
+      ['867-5309', 1, ['', '867-5309']],
+      ['tel:+1-555-438-3732', 1, ['tel:', '+1-555-438-3732']],
+      ['tel:+1-555-438-3732;ext=1234', 1, ['tel:', '+1-555-438-3732;ext=1234']],
+      ['tel:7042;phone-context=example.com', 1, ['tel:', '7042;phone-context=example.com']],
+      ['tel:1234;phone-context=munich.example.com', 1, ['tel:', '1234;phone-context=munich.example.com']],
+      ['tel:863-1234;phone-context=+1-914-555', 1, ['tel:', '863-1234;phone-context=+1-914-555']],
+
+      ['blarghbadphonenumber', 0]
     ];
   }
 }
