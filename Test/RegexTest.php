@@ -548,6 +548,7 @@ class RegexTest extends \PHPUnit_Framework_TestCase
       ['http://tinyurl.com/', 1],
       ['http://www.squidoo.com/how-to-write-and-self-publish-your-first-book', 1],
       ['https://www.google.com/search?q=restaurants&tbm=plcs', 1],
+      ['data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQAQMAAAAlPW0iAAAABlBMVEUAAAD///+l2Z/dAAAAM0lEQVR4nGP4/5/h/1+G/58ZDrAz3D/McH8yw83NDDeNGe4Ug9C9zwz3gVLMDA/A6P9/AFGGFyjOXZtQAAAAAElFTkSuQmCC', 1],
 
       ['blarghbaduri', 0],
       ['www.noscheme.com/is/no/good', 0]
