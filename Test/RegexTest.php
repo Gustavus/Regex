@@ -63,90 +63,31 @@ class RegexTest extends \PHPUnit_Framework_TestCase
 
   /**
    * @test
+   * @dataProvider urlProvider
    */
-  public function urlNotUrl()
+  public function url($url, $expected)
   {
-    $this->checkRegex('url', 'This is not a URL.', 0);
+    $this->checkRegex('url', $url, $expected);
   }
 
   /**
-   * @test
+   * Provides data for url
    */
-  public function urlSimpleEdu()
+  public static function urlProvider()
   {
-    $this->checkRegex('url', 'http://gustavus.edu', 1);
-  }
-
-  /**
-   * @test
-   */
-  public function urlSimpleEduWithPadding()
-  {
-    $this->checkRegex('url', 'http://gustavus.edu ', 1);
-  }
-
-  /**
-   * @test
-   */
-  public function urlSimpleEduInsideText()
-  {
-    $this->checkRegex('url', 'My website is at http://gustavus.edu now.', 1);
-  }
-
-  /**
-   * @test
-   */
-  public function urlWithPort()
-  {
-    $this->checkRegex('url', 'http://gustavus.edu:1234', 1);
-  }
-
-  /**
-   * @test
-   */
-  public function urlWithSecure()
-  {
-    $this->checkRegex('url', 'https://gustavus.edu ', 1);
-  }
-
-  /**
-   * @test
-   */
-  public function urlWithSecureAndPort()
-  {
-    $this->checkRegex('url', 'https://gustavus.edu:1234 ', 1);
-  }
-
-  /**
-   * @test
-   */
-  public function urlWithDirectory()
-  {
-    $this->checkRegex('url', 'http://gustavus.edu/about/', 1);
-  }
-
-  /**
-   * @test
-   */
-  public function urlWithDirectoryAndFile()
-  {
-    $this->checkRegex('url', 'http://gustavus.eduabout/index.php', 1);
-  }
-
-  /**
-   * @test
-   */
-  public function urlWithSecurePortDirectoryAndFile()
-  {
-    $this->checkRegex('url', 'https://gustavus.edu:1234/about/index.php', 1);
-  }
-
-  /**
-   * @test
-   */
-  public function urlWithSecurePortDirectoryAndFileInsideText()
-  {
-    $this->checkRegex('url', 'The best website ever is https://gustavus.edu:1234/about/index.php now.', 1);
+    return array(
+      ['This is not a URL',                         0],
+      ['https://gustavus.edu',                      1],
+      ['http://gustavus.edu:1234',                  1],
+      ['http://gustavus.edu/about/',                1],
+      ['http://gustavus.edu/about/index.php',       1],
+      ['http://gustavus.edu:1234/about/index.php',  1],
+      ['twitter.com',                               1],
+      ['nick.ninja',                                0],
+      ['nick.ninja/',                               1],
+      ['t.co/this%20is+awesome',                    1],
+      ['kaos.co/this#k',                            1]
+    );
   }
 
   /**

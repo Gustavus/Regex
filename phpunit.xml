@@ -1,17 +1,24 @@
-<phpunit bootstrap="autoloader.php">
+<phpunit bootstrap="/cis/lib/Gustavus/Concourse/bootstrap.php">
   <testsuites>
     <testsuite name="Regex">
       <directory suffix="Test.php">Test</directory>
     </testsuite>
   </testsuites>
 
+  <php>
+    <ini name="memory_limit" value="-1"/>
+    <ini name="xdebug.collect_params" value="0"/>
+    <server name="DOCUMENT_ROOT" value="/cis/www" />
+  </php>
+
+
   <filter>
     <whitelist>
-      <directory>.</directory>
+      <directory suffix=".php">/cis/lib/Gustavus/Regex</directory>
+
+      <exclude>
+        <directory>/cis/lib/Gustavus/Regex/Test</directory>
+      </exclude>
     </whitelist>
   </filter>
-
-  <php>
-    <ini name="xdebug.collect_params" value="0"/>
-  </php>
 </phpunit>

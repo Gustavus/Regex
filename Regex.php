@@ -32,7 +32,7 @@ class Regex
    * @return string
    * @todo adjust for internationalized domain names
    */
-  final public static function url($begin = '', $end = '')
+  final public static function url($begin = '^', $end = '$')
   {
     return "`
       {$begin}
@@ -45,7 +45,7 @@ class Regex
         # or, try to find a hostname with more specific sub-expression
         (?i: [a-z0-9] (?:[-a-z0-9]*[a-z0-9])? \\. )+ # sub domains
         # Now ending .com, etc. For these, require lowercase
-        (?-i: co(?:m|)\\b
+        (?-i: com\\b
             | edu\\b
             | biz\\b
             | gov\\b
@@ -53,7 +53,8 @@ class Regex
             | mil\\b
             | net\\b
             | org\\b
-            | [a-z][a-z]\\.[a-z][a-z]\\b # two-letter country code
+            | [a-z]{2}\\b # two-letter country code
+            | (?:[a-z]{3,}(?=:|/))
         )
       )
 
@@ -408,10 +409,10 @@ class Regex
           (?:
             \\+?
             (\\d{2})
-            [\\ \\.\\-]?
+            [ .\\-]?
           |)
           (\\d{2})
-          [\\ \\.\\-]?
+          [ .\\-]?
 
         |
 
@@ -420,12 +421,12 @@ class Regex
           (?:
             \\+?
             (\\d)
-            [\\ \\.\\-]?
+            [ .\\-]?
           |)
           \\(?
           (\\d{3})
           \\)?
-          [\\ \\.\\-]?
+          [ .\\-]?
         )
 
       |)
@@ -434,13 +435,13 @@ class Regex
 
       (\\d{3})
 
-      [\\ \\.\\-]?
+      [ .\\-]?
 
       (\\d{4})
 
       # Extension
       (?:
-        [\\ \\.\\-]?
+        [ .\\-]?
         (?:x|ext)
         \\.?
         \\ ?
