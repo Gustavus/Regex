@@ -1,5 +1,13 @@
 <?php
-
+/**
+ * @package Regex
+ * @author Joe Lencioni
+ * @author Jeremy Carlson
+ * @author Ryan Rud
+ * @author Billy Visto <bvisto@gustavus.edu>
+ * @author Chris Rog <crog@gustavus.edu>
+ * @author Nicholas Dobie <ndobie@gustavus.edu>
+ */
 namespace Gustavus\Regex\Test;
 
 use Gustavus\Regex\Regex;
@@ -7,6 +15,14 @@ use Gustavus\Regex\Regex;
 
 /**
  * Test class for RegEx
+ *
+ * @package Regex
+ * @author Joe Lencioni
+ * @author Jeremy Carlson
+ * @author Ryan Rud
+ * @author Billy Visto <bvisto@gustavus.edu>
+ * @author Chris Rog <crog@gustavus.edu>
+ * @author Nicholas Dobie <ndobie@gustavus.edu>
  */
 class RegexTest extends \PHPUnit_Framework_TestCase
 {
@@ -581,5 +597,34 @@ class RegexTest extends \PHPUnit_Framework_TestCase
 
       ['blarghbadphonenumber', 0]
     ];
+  }
+
+  /**
+   * @test
+   * @dataProvider phoneNumberProvider
+   */
+  public function phoneNumber($number, $expected, $matches)
+  {
+    $this->checkRegex('phoneNumber', $number, $expected, $matches);
+  }
+
+  /**
+   * Provides data for phoneNumber
+   */
+  public static function phoneNumberProvider()
+  {
+    return array(
+      ['+1-555-123-4567',   1, ['+1-555-123-4567',    '',   '',   '1',  '555',  '123', '4567']],
+      ['+1.555.123.4567',   1, ['+1.555.123.4567',    '',   '',   '1',  '555',  '123', '4567']],
+      ['+1 (555) 123 4567', 1, ['+1 (555) 123 4567',  '',   '',   '1',  '555',  '123', '4567']],
+      ['44 55 666 7777',    1, ['44 55 666 7777',     '44', '55', '',   '',     '666', '7777']],
+      ['44556667777',       1, ['44556667777',        '44', '55', '',   '',     '666', '7777']],
+      ['999-8888',          1, ['999-8888',           '',   '',   '',   '',     '999', '8888']],
+      ['999-8888 x43',      1, ['999-8888 x43',       '',   '',   '',   '',     '999', '8888', '43']],
+      ['999-8888 ext. 43',  1, ['999-8888 ext. 43',   '',   '',   '',   '',     '999', '8888', '43']],
+      ['9999-321',          0, []],
+      ['77789898',          0, []],
+      ['bad833number',      0, []]
+    );
   }
 }
