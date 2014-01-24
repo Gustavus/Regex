@@ -85,8 +85,13 @@ class RegexTest extends \PHPUnit_Framework_TestCase
       ['twitter.com',                               1],
       ['nick.ninja',                                0],
       ['nick.ninja/',                               1],
+      ['http://nick.ninja',                         1],
       ['t.co/this%20is+awesome',                    1],
-      ['kaos.co/this#k',                            1]
+      ['kaos.co/this#k',                            1],
+      ['kaos.io/this?k=false',                      1],
+      ['github.io',                                 1],
+      ['anything.co.uk',                            1],
+      ['nick.ninja/<notavalidurl',                  0]
     );
   }
 
