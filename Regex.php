@@ -68,7 +68,7 @@ class Regex
         [^.!,?;\\\"\\'<>()\[\]\{\}\s\x7F-\\xFF]*
         (
           [.!,?]+ [^.!,?;\\\"\\'<>()\\[\\]\{\\}\s\\x7F-\\xFF]+
-        )*
+        )* # Groups any parameters and extensions
       )?
       {$end}
     `ix";
