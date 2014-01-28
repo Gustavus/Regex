@@ -1,16 +1,41 @@
 <?php
+/**
+ * @package Regex
+ * @author Joe Lencioni
+ * @author Jeremy Carlson
+ * @author Ryan Rud
+ * @author Billy Visto <bvisto@gustavus.edu>
+ * @author Chris Rog <crog@gustavus.edu>
+ * @author Nicholas Dobie <ndobie@gustavus.edu>
+ */
 namespace Gustavus\Regex;
 
+/**
+ * A library of common regular expressions.
+ *
+ * @package Regex
+ * @author Joe Lencioni
+ * @author Jeremy Carlson
+ * @author Ryan Rud
+ * @author Billy Visto <bvisto@gustavus.edu>
+ * @author Chris Rog <crog@gustavus.edu>
+ * @author Nicholas Dobie <ndobie@gustavus.edu>
+ */
 class Regex
 {
 
   /**
+   * Check that URL is valid format.
+   *
+   * @param  string $begin Regex beginning anchor.
+   * @param  string $end   Regex ending anchor.
    * @return string
    * @todo adjust for internationalized domain names
    */
-  final public static function url()
+  final public static function url($begin = '^', $end = '$')
   {
-    return '{
+    return "`
+      {$begin}
       \\b
       # Match the leading part (proto://hostname, or just hostname)
       (
@@ -28,7 +53,8 @@ class Regex
             | mil\\b
             | net\\b
             | org\\b
-            | [a-z][a-z]\\.[a-z][a-z]\\b # two-letter country code
+            | [a-z]{2}\\b # two-letter country code
+            | (?:[a-z]{3,}(?=:|/))
         )
       )
 
@@ -39,12 +65,13 @@ class Regex
       (
         /
         # The rest are heuristics for what seems to work well
-        [^.!,?;"\\\'<>()\[\]\{\}\s\x7F-\\xFF]*
+        [^.!,?;\\\"\\'<>()\[\]\{\}\s\x7F-\\xFF]*
         (
-          [.!,?]+ [^.!,?;"\\\'<>()\\[\\]\{\\}\s\\x7F-\\xFF]+
-        )*
+          [.!,?]+ [^.!,?;\\\"\\'<>()\\[\\]\{\\}\s\\x7F-\\xFF]+
+        )* # Groups any parameters and extensions
       )?
-    }ix';
+      {$end}
+    `ix";
   }
 
   /**
@@ -63,12 +90,14 @@ class Regex
    * [1] => user (everything before the @)
    * [2] => domain (everything after the @)
    *
+   * @param  string $begin Regex beginning anchor.
+   * @param  string $end   Regex ending anchor.
    * @return string
    * @todo adjust for internationalized domain names
    */
-  final public static function emailAddress()
+  final public static function emailAddress($begin = '^', $end = '$')
   {
-    return '{^([0-9a-zA-Z](?:[-.\w]*[0-9a-zA-Z_+])*)@((?:[0-9a-zA-Z][-\w]*\.)+[a-zA-Z]{2,9})$}';
+    return "`{$begin}([0-9a-zA-Z](?:[-.\w]*[0-9a-zA-Z_+])*)@((?:[0-9a-zA-Z][-\w]*\.)+[a-zA-Z]{2,9}){$end}`";
   }
 
   /**
@@ -349,5 +378,77 @@ class Regex
     $telephoneuri         = "/\\A(tel:)?({$telephonesubscriber})\\z/i";
 
     return $telephoneuri;
+  }
+
+  /**
+   * Checks that a phone number is a valid format.
+   *
+   * * **0** => Whole Phone Number
+   * * **1** => E.123 Country Code      _(optional)_
+   * * **2** => E.123 Area Code         _(optional)_
+   * * **3** => US-Style Country Code   _(optional)_
+   * * **4** => US-Style Area Code      _(optional)_
+   * * **5** => Primary 3-Digits
+   * * **6** => Primary 4-Digits
+   * * **7** => Extension               _(optional)_
+   *
+   * @param  string $begin Regex beginning anchor.
+   * @param  string $end   Regex ending anchor.
+   * @return string        Returns the Regex.
+   */
+  public static function phoneNumber($begin = '^', $end = '$')
+  {
+    return "/
+      {$begin}
+
+      (?:
+        (?:
+
+          # E.123 Standard
+
+          (?:
+            \\+?
+            (\\d{2})
+            [ .\\-]?
+          |)
+          (\\d{2})
+          [ .\\-]?
+
+        |
+
+          # US Standard
+
+          (?:
+            \\+?
+            (\\d)
+            [ .\\-]?
+          |)
+          \\(?
+          (\\d{3})
+          \\)?
+          [ .\\-]?
+        )
+
+      |)
+
+      # Primary Digits
+
+      (\\d{3})
+
+      [ .\\-]?
+
+      (\\d{4})
+
+      # Extension
+      (?:
+        [ .\\-]?
+        (?:x|ext)
+        \\.?
+        \\ ?
+        (\\d+)
+      |)
+
+      {$end}
+    /ix";
   }
 }
