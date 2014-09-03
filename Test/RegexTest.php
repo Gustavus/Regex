@@ -418,6 +418,15 @@ class RegexTest extends \PHPUnit_Framework_TestCase
   /**
    * @test
    */
+  public function courseEmailListFallCourseAliasCourseCodeContainsDash()
+  {
+    $this->checkRegex('courseEmailList', 'f-t-d-101-001@lists.gustavus.edu', 1, array('f-t-d-101-001@lists.gustavus.edu', 'f-t-d-101-001'));
+    $this->checkRegex('courseEmailList', 'f-t/d-101-001@lists.gustavus.edu', 1, array('f-t/d-101-001@lists.gustavus.edu', 'f-t/d-101-001'));
+  }
+
+  /**
+   * @test
+   */
   public function courseEmailListNonGeneratedEmailAddress()
   {
     $this->checkRegex('courseEmailList', 'bvisto@gustavus.edu', 0);

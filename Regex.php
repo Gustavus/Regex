@@ -175,7 +175,7 @@ class Regex
       ^
       (
         # Match course aliases (f-ART-100-001)
-        (?:f|jt|s)-[A-Z/]{3}-\d{3}-(?:\d{3}|all)
+        (?:f|jt|s)-(?:[A-Z/]{3}|[A-Z]\-[A-Z])-\d{3}-(?:\d{3}|all)
       )
 
       # Match @gustavus.edu, @gac.edu, @lists.gustavus.edu, or @lists.gac.edu
