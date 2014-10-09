@@ -76,22 +76,22 @@ class RegexTest extends \PHPUnit_Framework_TestCase
   public static function urlProvider()
   {
     return array(
-      ['This is not a URL',                         0],
-      ['https://gustavus.edu',                      1],
-      ['http://gustavus.edu:1234',                  1],
-      ['http://gustavus.edu/about/',                1],
-      ['http://gustavus.edu/about/index.php',       1],
-      ['http://gustavus.edu:1234/about/index.php',  1],
-      ['twitter.com',                               1],
-      ['nick.ninja',                                0],
-      ['nick.ninja/',                               1],
-      ['http://nick.ninja',                         1],
-      ['t.co/this%20is+awesome',                    1],
-      ['kaos.co/this#k',                            1],
-      ['kaos.io/this?k=false',                      1],
-      ['github.io',                                 1],
-      ['anything.co.uk',                            1],
-      ['nick.ninja/<notavalidurl',                  0]
+      array('This is not a URL',                         0),
+      array('https://gustavus.edu',                      1),
+      array('http://gustavus.edu:1234',                  1),
+      array('http://gustavus.edu/about/',                1),
+      array('http://gustavus.edu/about/index.php',       1),
+      array('http://gustavus.edu:1234/about/index.php',  1),
+      array('twitter.com',                               1),
+      array('nick.ninja',                                0),
+      array('nick.ninja/',                               1),
+      array('http://nick.ninja',                         1),
+      array('t.co/this%20is+awesome',                    1),
+      array('kaos.co/this#k',                            1),
+      array('kaos.io/this?k=false',                      1),
+      array('github.io',                                 1),
+      array('anything.co.uk',                            1),
+      array('nick.ninja/<notavalidurl',                  0)
     );
   }
 
@@ -508,22 +508,22 @@ class RegexTest extends \PHPUnit_Framework_TestCase
    */
   public function dataForURIRegex()
   {
-    return [
-      ['http://stackoverflow.com/questions/5496656/check-if-item-can-be-converted-to-string', 1],
-      ['http://tools.ietf.org/html/rfc3986#section-3', 1],
-      ['http://63.197.151.31/blog/machine-learning-and-link-spam-my-brush-with-insanity', 1],
-      ['http://www.smashingapps.com/2009/01/13/11-great-hidden-things-google-can-do-that-you-should-know.html', 1],
-      ['http://[FEDC:BA98:7654:3210:FEDC:BA98:7654:3210]:80/index.html', 1],
-      ['http://hq.squidoo.com/squid-news/make-a-lens-win-a-monkey-well-sort-of/', 1],
-      ['http://[fec0::abcd%251]/', 1],
-      ['http://tinyurl.com/', 1],
-      ['http://www.squidoo.com/how-to-write-and-self-publish-your-first-book', 1],
-      ['https://www.google.com/search?q=restaurants&tbm=plcs', 1],
-      ['data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQAQMAAAAlPW0iAAAABlBMVEUAAAD///+l2Z/dAAAAM0lEQVR4nGP4/5/h/1+G/58ZDrAz3D/McH8yw83NDDeNGe4Ug9C9zwz3gVLMDA/A6P9/AFGGFyjOXZtQAAAAAElFTkSuQmCC', 1],
+    return array(
+      array('http://stackoverflow.com/questions/5496656/check-if-item-can-be-converted-to-string', 1),
+      array('http://tools.ietf.org/html/rfc3986#section-3', 1),
+      array('http://63.197.151.31/blog/machine-learning-and-link-spam-my-brush-with-insanity', 1),
+      array('http://www.smashingapps.com/2009/01/13/11-great-hidden-things-google-can-do-that-you-should-know.html', 1),
+      array('http://[FEDC:BA98:7654:3210:FEDC:BA98:7654:3210]:80/index.html', 1),
+      array('http://hq.squidoo.com/squid-news/make-a-lens-win-a-monkey-well-sort-of/', 1),
+      array('http://[fec0::abcd%251]/', 1),
+      array('http://tinyurl.com/', 1),
+      array('http://www.squidoo.com/how-to-write-and-self-publish-your-first-book', 1),
+      array('https://www.google.com/search?q=restaurants&tbm=plcs', 1),
+      array('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQAQMAAAAlPW0iAAAABlBMVEUAAAD///+l2Z/dAAAAM0lEQVR4nGP4/5/h/1+G/58ZDrAz3D/McH8yw83NDDeNGe4Ug9C9zwz3gVLMDA/A6P9/AFGGFyjOXZtQAAAAAElFTkSuQmCC', 1),
 
-      ['blarghbaduri', 0],
-      ['www.noscheme.com/is/no/good', 0]
-    ];
+      array('blarghbaduri', 0),
+      array('www.noscheme.com/is/no/good', 0)
+    );
   }
 
   /**
@@ -542,16 +542,16 @@ class RegexTest extends \PHPUnit_Framework_TestCase
    */
   public function dataForPhoneURIRegex()
   {
-    return [
-      ['867-5309', 1, ['', '867-5309']],
-      ['tel:+1-555-438-3732', 1, ['tel:', '+1-555-438-3732']],
-      ['tel:+1-555-438-3732;ext=1234', 1, ['tel:', '+1-555-438-3732;ext=1234']],
-      ['tel:7042;phone-context=example.com', 1, ['tel:', '7042;phone-context=example.com']],
-      ['tel:1234;phone-context=munich.example.com', 1, ['tel:', '1234;phone-context=munich.example.com']],
-      ['tel:863-1234;phone-context=+1-914-555', 1, ['tel:', '863-1234;phone-context=+1-914-555']],
+    return array(
+      array('867-5309', 1, array('', '867-5309')),
+      array('tel:+1-555-438-3732', 1, array('tel:', '+1-555-438-3732')),
+      array('tel:+1-555-438-3732;ext=1234', 1, array('tel:', '+1-555-438-3732;ext=1234')),
+      array('tel:7042;phone-context=example.com', 1, array('tel:', '7042;phone-context=example.com')),
+      array('tel:1234;phone-context=munich.example.com', 1, array('tel:', '1234;phone-context=munich.example.com')),
+      array('tel:863-1234;phone-context=+1-914-555', 1, array('tel:', '863-1234;phone-context=+1-914-555')),
 
-      ['blarghbadphonenumber', 0]
-    ];
+      array('blarghbadphonenumber', 0)
+    );
   }
 
   /**
@@ -569,17 +569,17 @@ class RegexTest extends \PHPUnit_Framework_TestCase
   public static function phoneNumberProvider()
   {
     return array(
-      ['+1-555-123-4567',   1, ['+1-555-123-4567',    '',   '',   '1',  '555',  '123', '4567']],
-      ['+1.555.123.4567',   1, ['+1.555.123.4567',    '',   '',   '1',  '555',  '123', '4567']],
-      ['+1 (555) 123 4567', 1, ['+1 (555) 123 4567',  '',   '',   '1',  '555',  '123', '4567']],
-      ['44 55 666 7777',    1, ['44 55 666 7777',     '44', '55', '',   '',     '666', '7777']],
-      ['44556667777',       1, ['44556667777',        '44', '55', '',   '',     '666', '7777']],
-      ['999-8888',          1, ['999-8888',           '',   '',   '',   '',     '999', '8888']],
-      ['999-8888 x43',      1, ['999-8888 x43',       '',   '',   '',   '',     '999', '8888', '43']],
-      ['999-8888 ext. 43',  1, ['999-8888 ext. 43',   '',   '',   '',   '',     '999', '8888', '43']],
-      ['9999-321',          0, []],
-      ['77789898',          0, []],
-      ['bad833number',      0, []]
+      array('+1-555-123-4567',   1, array('+1-555-123-4567',    '',   '',   '1',  '555',  '123', '4567')),
+      array('+1.555.123.4567',   1, array('+1.555.123.4567',    '',   '',   '1',  '555',  '123', '4567')),
+      array('+1 (555) 123 4567', 1, array('+1 (555) 123 4567',  '',   '',   '1',  '555',  '123', '4567')),
+      array('44 55 666 7777',    1, array('44 55 666 7777',     '44', '55', '',   '',     '666', '7777')),
+      array('44556667777',       1, array('44556667777',        '44', '55', '',   '',     '666', '7777')),
+      array('999-8888',          1, array('999-8888',           '',   '',   '',   '',     '999', '8888')),
+      array('999-8888 x43',      1, array('999-8888 x43',       '',   '',   '',   '',     '999', '8888', '43')),
+      array('999-8888 ext. 43',  1, array('999-8888 ext. 43',   '',   '',   '',   '',     '999', '8888', '43')),
+      array('9999-321',          0, array()),
+      array('77789898',          0, array()),
+      array('bad833number',      0, array())
     );
   }
 }
