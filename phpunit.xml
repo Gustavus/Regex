@@ -1,4 +1,4 @@
-<phpunit bootstrap="/cis/lib/Gustavus/Concourse/bootstrap.php">
+<phpunit>
   <testsuites>
     <testsuite name="Regex">
       <directory suffix="Test.php">Test</directory>
